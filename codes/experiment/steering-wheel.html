@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Draggable Car Steering Wheel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    #knob {
+      margin: 10% auto;
+      transform-origin: center;
+      position: relative;
+      width: 500px;
+      height: 500px;
+    }
+
+    .indicator {
+      position: absolute;
+      color: white;
+      font-size: 2em;
+      cursor: pointer;
+    }
+
+    #left-indicator {
+      top: 50%;
+      left: 20%;
+      transform: translate(-50%, -50%);
+    }
+
+    #right-indicator {
+      top: 50%;
+      right: 20%;
+      transform: translate(50%, -50%);
+    }
+
+    #horn-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100px;
+      height: 100px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: black;
+      font-size: 2em;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    #horn-button:active {
+      background-color: black;
+      color: white;
+    }
+
+    #wiper-button {
+      position: absolute;
+      top: 30%;
+      left: 20%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: black;
+      font-size: 1.5em;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    #wiper-button.active {
+      background-color: orange;
+      color: white;
+    }
+
+    #auto-manual-button {
+      position: absolute;
+      top: 30%;
+      right: 20%;
+      transform: translate(50%, -50%);
+      width: 50px;
+      height: 50px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: black;
+      font-size: 1.5em;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    #auto-manual-button.auto {
+      background-color: green;
+      color: white;
+    }
+
+    #auto-manual-button.manual {
+      background-color: red;
+      color: white;
+    }
+
+    #return-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 10px 20px;
+      background-color: white;
+      border: none;
+      border-radius: 5px;
+      color: black;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    #return-button:hover {
+      background-color: black;
+      color: white;
+    }
+
+    body {
+      background: black;
+    }
+
+    .blink {
+    /* Blink animation for indicators */
+    animation: blink-animation 0.5s steps(5, start) infinite, color-change 0.5s steps(5, start) infinite;
+    -webkit-animation: blink-animation 0.5s steps(5, start) infinite, color-change 0.5s steps(5, start) infinite;
+    }
+
+    @keyframes blink-animation {
+      to {
+        visibility: hidden;
+      }
+    }
+
+    @-webkit-keyframes blink-animation {
+      to {
+        visibility: hidden;
+      }
+    }
+    
+    @keyframes color-change {
+        0%, 100% {
+          color: white;
+        }
+        50% {
+          color: yellow;
+        }
+      }
+    
+      @-webkit-keyframes color-change {
+        0%, 100% {
+          color: white;
+        }
+        50% {
+          color: yellow;
+        }
+      }
+    
+
+    /* Loading prompt */
+    .loading-prompt {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 10px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Prompt -->
+  <div class="loading-prompt" id="loading-prompt">Website is still loading...</div>
+
+  <button id="return-button" onclick="window.location.href='main.html'">Return to Windscreen</button>
+
+  <center>
+    <div id="knob">
+      <img src="https://www.pngall.com/wp-content/uploads/5/Car-Steering-Wheel-PNG-Images.png" width="500" height="500">
+      <i id="left-indicator" class="indicator fas fa-arrow-left"></i>
+      <i id="right-indicator" class="indicator fas fa-arrow-right"></i>
+      <div id="horn-button"><i class="fas fa-bullhorn"></i></div>
+      <div id="wiper-button"><i class="fas fa-water"></i></div>
+      <div id="auto-manual-button" class="manual"><i class="fas fa-car"></i></div>
+    </div>
+  </center>
+
+  <audio id="indicator-sound" src="../sound/light_indictor_start.mp3"></audio>
+  <audio id="stop-sound" src="../sound/light_indictor_stop.mp3"></audio>
+  <audio id="horn-sound" src="../sound/Horn.mp3"></audio>
+  <audio id="wiper-sound" src="../sound/windshield_wiper.mp3" loop></audio>
+  <audio id="auto-sound" src="../sound/auto_mode.mp3"></audio>
+  <audio id="manual-sound" src="../sound/manual_mode.mp3"></audio>
+
+  <script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/jquery.gsap.min.js" integrity="sha512-K43Gi6p1AN9cBmgnY3XE1ii0wc2Rl4dArjMgYeXpYmLSZGA7jXWcX4Drj52m2K9js6qHSRQoYlKyO4sSr3nbSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/utils/Draggable.min.js" integrity="sha512-qSMkmJNNoHwFdzaT+LgrH+gegU2D8sgBQTp4o8flIpmyyLB33GVnFCt2d+F9uNxWXoUZFNSwkH6SImVWPp3AJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js" integrity="sha512-DkPsH9LzNzZaZjCszwKrooKwgjArJDiEjA5tTgr3YX4E6TYv93ICS8T41yFHJnnSmGpnf0Mvb5NhScYbwvhn2w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src='./js/ThrowPropsPlugin.js'></script>
+  <script>
+    Draggable.create("#knob", {
+      type: "rotation",
+      throwProps: true,
+      onDrag: function() {
+        console.log(this.rotation);
+      }
+    });
+
+    function blinkIndicator(indicator) {
+      const sound = document.getElementById('indicator-sound');
+      const stopSound = document.getElementById('stop-sound');
+      indicator.classList.add('blink');
+      sound.play();
+      setTimeout(() => {
+        indicator.classList.remove('blink');
+        sound.pause();
+        sound.currentTime = 0;
+        stopSound.play();
+      }, 3000); // Blink for 3 seconds
+    }
+
+    document.getElementById('left-indicator').addEventListener('click', function() {
+      blinkIndicator(this);
+    });
+
+    document.getElementById('right-indicator').addEventListener('click', function() {
+      blinkIndicator(this);
+    });
+
+    document.getElementById('horn-button').addEventListener('click', function() {
+      const hornSound = document.getElementById('horn-sound');
+      hornSound.play();
+    });
+
+    document.getElementById('wiper-button').addEventListener('click', function() {
+      const wiperButton = this;
+      const wiperSound = document.getElementById('wiper-sound');
+      if (wiperButton.classList.contains('active')) {
+        wiperButton.classList.remove('active');
+        wiperSound.pause();
+        wiperSound.currentTime = 0;
+      } else {
+        wiperButton.classList.add('active');
+        wiperSound.play();
+      }
+    });
+
+    document.getElementById('auto-manual-button').addEventListener('click', function() {
+      const autoManualButton = this;
+      const autoSound = document.getElementById('auto-sound');
+      const manualSound = document.getElementById('manual-sound');
+      if (autoManualButton.classList.contains('manual')) {
+        autoManualButton.classList.remove('manual');
+        autoManualButton.classList.add('auto');
+        autoManualButton.innerHTML = '<i class="fas fa-robot"></i>';
+        autoSound.play();
+      } else {
+        autoManualButton.classList.remove('auto');
+        autoManualButton.classList.add('manual');
+        autoManualButton.innerHTML = '<i class="fas fa-car"></i>';
+        manualSound.play();
+      }
+    });
+
+    // Remove loading prompt after 5 seconds
+    setTimeout(() => {
+      document.getElementById("loading-prompt").style.display = 'none';
+    }, 5000);
+  </script>
+</body>
+</html>

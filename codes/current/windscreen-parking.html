@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Car</title>
+    <link rel="icon" href="../img/car_icon.png" type="image/x-icon">
+
+    <!-- Custom fonts for this template-->
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+
+    <style>
+        .background-container {
+            position: relative;
+            width: 100%;
+            max-width: 1920px;
+            /* Adjust as needed */
+            height: auto;
+        }
+
+        .background-image {
+            width: 100%;
+            display: block;
+        }
+
+        .top-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40vh;
+            /* Set the height for the black area */
+            max-height: 40%;
+            z-index: 1;
+            background-color: black;
+        }
+
+        /* Container for buttons on the right side of the video */
+        .button-container {
+            position: absolute;
+            top: 5%;
+            /* Adjust to align vertically */
+            right: 80px;
+            /* Position near the right edge of the video */
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            /* Space between buttons */
+            z-index: 2;
+        }
+
+        /* Buttons overlaying the video on the right side */
+        .video-overlay-button {
+            padding: 8px 16px;
+            background-color: rgba(255, 255, 255, 0.8);
+            /* Semi-transparent white background */
+            border: none;
+            border-radius: 5px;
+            color: black;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .overlay-button {
+            position: absolute;
+            top: 64%;
+            /* Adjust to place the button in the white box area */
+            left: 62%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            /* Set width and height to match white box */
+            height: 200px;
+            background-color: #cad1d5;
+            border: none;
+            border-radius: 5px;
+            color: black;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        /* Emergency Warning Lights */
+        .warning-light {
+            position: absolute;
+            width: 6vw;
+            /* Width relative to the viewport */
+            height: 38%;
+            /* Height relative to the .top-video container */
+            background-color: red;
+            animation: flash 1s infinite;
+            z-index: 3;
+            display: none;
+            /* Hide by default */
+        }
+
+        .warning-light.left {
+            top: 1%;
+            left: 1%;
+        }
+
+        .warning-light.right {
+            top: 1%;
+            right: 1%;
+        }
+
+        @keyframes flash {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .emergency-button-container {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+
+        .control-button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #333;
+            color: #fff;
+            border-radius: 5px;
+        }
+    </style>
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <div class="background-container">
+                <!-- Video element -->
+                <video autoplay muted class="top-video" id="topVideo">
+                    <source src="../video/car-parking-parked.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+
+                <!-- Background content (car dashboard) -->
+                <img src="../img/car1.jpg" alt="Car dashboard background" class="background-image">
+
+                <!-- Button overlay in the white box area -->
+                <a href="dashboard-engine-on.html">
+                    <button class="overlay-button"><img src="../img/dashboard-engine-off.png" width="525" height="150"
+                            alt=""></button>
+                </a>
+
+                <!-- Emergency Warning Lights -->
+                <div class="warning-light left"></div>
+                <div class="warning-light right"></div>
+
+                <!-- Emergency Sound -->
+                <audio id="emergencySound" src="../voice/emergency_sound.m4a" preload="auto" loop></audio>
+            </div>
+            <table>
+                <tr>
+                    <td><button onclick="playAndNavigate('myAudio1', 'navigation2.html')"
+                            style="opacity: 0;">Navigate</button>
+                        <audio id="myAudio1" src="../voice/navigating.mp3" preload="auto"></audio>
+                    </td>
+                    <td>|</td>
+                    <td><button onclick="playAndNavigate('myAudio2')" style="opacity: 0;">Song</button>
+                        <audio id="myAudio2" src="../voice/playingsong1.mp3" preload="auto"></audio>
+                    </td>
+                    <td>|</td>
+                    <td><button onclick="playAndNavigate('myAudio3')" style="opacity: 0;">Call</button>
+                        <audio id="myAudio3" src="../voice/calling.mp3" preload="auto"></audio>
+                    </td>
+                    <td>|</td>
+                    <td><button onclick="playAndNavigate('myAudio4')" style="opacity: 0;">Weather</button>
+                        <audio id="myAudio4" src="../voice/weather.mp3" preload="auto"></audio>
+                    </td>
+                    <td>|</td>
+                    <td><button onclick="playAndNavigate('myAudio5')" style="opacity: 0;">Temperature</button>
+                        <audio id="myAudio5" src="../voice/temperature.mp3" preload="auto"></audio>
+                    </td>
+                    <td>|</td>
+                    <td><button onclick="playAndNavigate('myAudio6')" style="opacity: 0;">Headlights</button>
+                        <audio id="myAudio6" src="../voice/headlights.mp3" preload="auto"></audio>
+                    </td>
+                    <td>|</td>
+                    <td><button onclick="playAndNavigate('myAudio7')" style="opacity: 0;">Manual Control</button>
+                        <audio id="myAudio7" src="../voice/manual.mp3" preload="auto"></audio>
+                    </td>
+                    <td>|</td>
+                    <td><button onclick="playAndNavigate('myAudio8')" style="opacity: 0;">Cruise Control</button>
+                        <audio id="myAudio8" src="../voice/cruise.mp3" preload="auto"></audio>
+                    </td>
+                    <td>|</td>
+                    <td><button onclick="playAndNavigate('myAudio9')" style="opacity: 0;">Message</button>
+                        <audio id="myAudio9" src="../voice/message.mp3" preload="auto"></audio>
+                    </td>
+                    <td>|</td>
+                    <td><button onclick="playAndNavigate('myAudio10', 'navigation3.html')"
+                            style="opacity: 0;">Route</button>
+                        <audio id="myAudio10" src="../voice/route.mp3" preload="auto"></audio>
+                    </td>
+                </tr>
+            </table>
+
+            <script>
+                function playAndNavigate(audioId, url) {
+                    const audio = document.getElementById(audioId);
+                    audio.play();
+
+                    if (url != null) {
+                        audio.onended = function () {
+                            window.location.href = url;
+                        };
+                    }
+                }
+            </script>
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="../js/sb-admin-2.min.js"></script>
+
+    <!-- JavaScript to change the video source and control emergency lights/sound -->
+    <script>
+        function changeVideo(videoSrc) {
+            const video = document.getElementById("topVideo");
+            if (video) {
+                console.log("Changing video to:", videoSrc); // Log the new video path for debugging
+                video.src = videoSrc; // Update the source
+                video.load(); // Reload the video with the new source
+                video.play(); // Automatically play the new video
+            } else {
+                console.error("Video element with id 'topVideo' not found.");
+            }
+        }
+
+        function activateEmergency() {
+            document.getElementById("emergencySound").play();
+            document.querySelectorAll('.warning-light').forEach(light => {
+                light.style.display = 'block';
+            });
+        }
+
+        function deactivateEmergency() {
+            document.getElementById("emergencySound").pause();
+            document.getElementById("emergencySound").currentTime = 0;
+            document.querySelectorAll('.warning-light').forEach(light => {
+                light.style.display = 'none';
+            });
+        }
+    </script>
+
+</body>
+
+</html>
